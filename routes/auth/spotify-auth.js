@@ -47,15 +47,9 @@ router.get('/callback', async (req, res) => {
     return;
   }
 
-  const tokenBody = {
-    code,
-    redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
-    grant_type: 'authorization_code'
-  };
-
   res.clearCookie(stateKey);
-  console.log('code', code);
-  const [tokenErr, { data: tokenData }] = await handlePromise(
+
+  const [tokenErr, tokenData] = await handlePromise(
     axios({
       url: 'https://accounts.spotify.com/api/token',
       method: 'POST',
@@ -73,14 +67,13 @@ router.get('/callback', async (req, res) => {
   );
 
   if (tokenErr) {
-    console.log(tokenErr);
     res.redirect(`/#error=token_error`);
     return;
   }
-  console.log(tokenData);
-  const { access_token: accessToken, refresh_token: refreshToken } = tokenData;
 
-  // redirect to req.params.redirect_uri
+  const { access_token: accessToken, refresh_token: refreshToken } = tokenData.data;
+
+  // redirect to req.query.redirect_uri
   res.redirect(`${clientRedirectUri}#access_token=${accessToken}&refresh_token=${refreshToken}`);
 });
 
@@ -89,30 +82,26 @@ router.get('/refresh', async (req, res) => {
   // requesting access token from refresh token
   const refreshToken = req.query.refresh_token;
 
-  const [err, { data: newToken }] = await handlePromise(
-    axios.post(
-      'https://accounts.spotify.com/api/token',
-      {
+  const [err, refreshTokenData] = await handlePromise(
+    axios({
+      url: 'https://accounts.spotify.com/api/token',
+      method: 'POST',
+      params: {
         grant_type: 'refresh_token',
-        refresh_token: refreshToken
-      },
-      {
-        headers: {
-          Authorization: `Basic ${Buffer.from(
-            `${process.env.SPOTIFY_CLIENT_ID} : ${process.env.SPOTIFY_CLIENT_SECRET}
-      `
-          ).toString('base64')}`
-        }
+        refresh_token: refreshToken,
+        client_id: process.env.SPOTIFY_CLIENT_ID,
+        client_secret: process.env.SPOTIFY_CLIENT_SECRET
       }
-    )
+    })
   );
 
   if (err) {
+    console.log(err);
     res.status(400).json(err);
     return;
   }
 
-  res.json(newToken);
+  res.json(refreshTokenData.data);
 });
 
 module.exports = router;
