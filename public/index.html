@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify Login Demo</title>
+</head>
+
+<body>
+  <h1>Click this to get a token.</h1>
+  <a href="/auth/spotify/login?redirect_uri=http://localhost:4000">Login with Spotify</a>
+
+  <hr />
+
+  <h2>Click this to get a refresh token</h2>
+  <button id="refresh-btn" disabled>Get Refresh Token</button>
+  <p id="refresh-token-body"></p>
+
+  <script>
+    const $refreshBtn = document.querySelector('#refresh-btn');
+    let hashObj;
+
+    function init() {
+      // get tokens from url
+      hashObj = location.hash ? location.hash?.substr(1)
+        .split("&")
+        .map(v => v.split("="))
+        .reduce((pre, [key, value]) => ({ ...pre, [key]: value }), {}) : null;
+      console.log(hashObj);
+
+      if (!hashObj) {
+        console.warn('No token');
+        return;
+      }
+      location.hash = '';
+      $refreshBtn.removeAttribute('disabled');
+    }
+
+    function handleGetRefresh(e) {
+      e.preventDefault();
+
+      const queryUrl = `/auth/spotify/refresh?refresh_token=${hashObj.refresh_token}`
+
+      fetch(queryUrl)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(res);
+          }
+          return res.json();
+        })
+        .then(tokenData => {
+          console.log(tokenData);
+          document.querySelector('#refresh-token-body').textContent = JSON.stringify(tokenData, null, 2);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+
+    }
+
+    $refreshBtn.addEventListener('click', handleGetRefresh);
+    init();
+  </script>
+</body>
+
+</html>
