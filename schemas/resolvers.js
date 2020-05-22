@@ -2,9 +2,9 @@ const { AuthenticationError } = require('apollo-server-express');
 
 const resolvers = {
   Query: {
-    search: async (_, args, { dataSources, token }) => {
+    search: async (_, args, { dataSources: { spotifySearch }, token }) => {
       if (token) {
-        const results = await dataSources.spotifySearch.search(args.q, args.type);
+        const results = await spotifySearch.search(args.q, args.type);
         return results;
       }
       throw new AuthenticationError('Not logged in');
