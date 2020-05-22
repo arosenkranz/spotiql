@@ -2,10 +2,10 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
   type Query {
-    search(q: String!, type: AllowedSearchType): Result
+    search(q: String!, type: AllowedSearchType): SearchResult
   }
 
-  type Result {
+  type SearchResult {
     albums: [Album]
     artists: [Artist]
     tracks: [Track]
@@ -14,6 +14,7 @@ const typeDefs = gql`
   }
 
   type Album {
+    id: String
     name: String
     uri: String
     total_tracks: Int
@@ -22,6 +23,7 @@ const typeDefs = gql`
   }
 
   type Artist {
+    id: String
     name: String
     uri: String
     genres: [String]
@@ -29,6 +31,7 @@ const typeDefs = gql`
   }
 
   type Track {
+    id: String
     name: String
     uri: String
     track_number: Int

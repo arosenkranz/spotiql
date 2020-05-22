@@ -45,6 +45,7 @@ class SpotifySearch extends RESTDataSource {
   // artist reducer
   artistReducer(artist) {
     return {
+      id: artist.id,
       name: artist.name,
       genres: artist.genres,
       images:
@@ -58,6 +59,7 @@ class SpotifySearch extends RESTDataSource {
   // album reducer
   albumReducer(album) {
     return {
+      id: album.id,
       name: album.name,
       artists: album.artists.map(artist => this.artistReducer(artist)),
       total_tracks: album.total_tracks,
@@ -69,6 +71,7 @@ class SpotifySearch extends RESTDataSource {
   // track reducer
   trackReducer(track) {
     return {
+      id: track.id,
       name: track.name,
       uri: track.uri,
       duration: track.duration_ms,
