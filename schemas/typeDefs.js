@@ -3,6 +3,9 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
   type Query {
     search(q: String!, type: AllowedSearchType): SearchResult
+    getAlbums(ids: [String]): [Album]
+    getSingleAlbum(id: String!): Album
+    getSingleAlbumTracks(id: String!): [Track]
   }
 
   type SearchResult {
@@ -18,6 +21,7 @@ const typeDefs = gql`
     name: String
     uri: String
     total_tracks: Int
+    tracks: [Track]
     artists: [Artist]
     images: [Image]
   }
@@ -38,6 +42,7 @@ const typeDefs = gql`
     duration: Int
     album: Album
     artists: Artist
+    preview_url: String
   }
 
   type Image {
