@@ -1,9 +1,9 @@
 const { RESTDataSource } = require('apollo-datasource-rest');
 
-class SpotifySearch extends RESTDataSource {
+class SpotifyAlbum extends RESTDataSource {
   constructor() {
     super();
-    this.baseURL = 'https://api.spotify.com/v1/search';
+    this.baseURL = 'https://api.spotify.com/v1/albums';
   }
 
   // set spotify token with each request
@@ -11,32 +11,29 @@ class SpotifySearch extends RESTDataSource {
     request.headers.set('Authorization', `Bearer ${this.context.token}`);
   }
 
-  // use enum for limited type choices
-  // show,episode,playlist
-  async search(query = 'Small Black', type = 'artist,album,track') {
+  async getAlbums(albumIds) {
     const data = await this.get('/', {
-      q: query,
-      type,
-      market: 'from_token',
-      order_by: 'most_viewed'
+      ids: albumIds
     });
 
-    const results = {};
+    const results =
+      data.albums && data.albums.length ? data.albums.map(album => this.albumReducer(album)) : [];
 
-    results.artists =
-      data.artists && data.artists.items.length
-        ? data.artists.items.map(artist => this.artistReducer(artist))
-        : [];
+    return results;
+  }
 
-    results.albums =
-      data.albums && data.albums.items.length
-        ? data.albums.items.map(album => this.albumReducer(album))
-        : [];
+  async getSingleAlbum(albumId) {
+    const data = await this.get(`/${albumId}`);
+    const results = data ? this.albumReducer(data) : {};
 
-    results.tracks =
-      data.tracks && data.tracks.items.length
-        ? data.tracks.items.map(track => this.trackReducer(track))
-        : [];
+    return results;
+  }
+
+  async getSingleAlbumTracks(albumId) {
+    const data = await this.get(`/${albumId}/tracks`);
+
+    const results =
+      data.items && data.items.length ? data.items.map(track => this.trackReducer(track)) : [];
 
     return results;
   }
@@ -62,6 +59,7 @@ class SpotifySearch extends RESTDataSource {
       name: album.name,
       artists: album.artists.map(artist => this.artistReducer(artist)),
       total_tracks: album.total_tracks,
+      tracks: album.tracks.items.map(track => this.trackReducer(track)),
       images: album.images.map(image => this.imageReducer(image)),
       uri: album.uri
     };
@@ -76,7 +74,6 @@ class SpotifySearch extends RESTDataSource {
       duration: track.duration_ms,
       track_number: track.track_number,
       artists: track.artists.map(artist => this.artistReducer(artist)),
-      album: this.albumReducer(track.album),
       preview_url: track.preview_url
     };
   }
@@ -90,4 +87,4 @@ class SpotifySearch extends RESTDataSource {
   }
 }
 
-module.exports = SpotifySearch;
+module.exports = SpotifyAlbum;
