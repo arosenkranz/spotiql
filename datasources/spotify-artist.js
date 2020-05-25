@@ -1,9 +1,9 @@
 const { RESTDataSource } = require('apollo-datasource-rest');
 
-class SpotifyAlbum extends RESTDataSource {
+class SpotifyArtist extends RESTDataSource {
   constructor() {
     super();
-    this.baseURL = 'https://api.spotify.com/v1/albums';
+    this.baseURL = 'https://api.spotify.com/v1/artists';
   }
 
   // set spotify token with each request
@@ -11,29 +11,51 @@ class SpotifyAlbum extends RESTDataSource {
     request.headers.set('Authorization', `Bearer ${this.context.token}`);
   }
 
-  async getAlbums(albumIds) {
+  async getArtists(albumIds) {
     const data = await this.get('/', {
       ids: albumIds
     });
 
     const results =
-      data.albums && data.albums.length ? data.albums.map(album => this.albumReducer(album)) : [];
+      data.artists && data.artists.length
+        ? data.artists.map(artist => this.artistReducer(artist))
+        : [];
 
     return results;
   }
 
-  async getSingleAlbum(albumId) {
-    const data = await this.get(`/${albumId}`);
-    const results = data ? this.albumReducer(data) : {};
+  async getSingleArtist(artistId) {
+    const data = await this.get(`/${artistId}`);
+    const results = data ? this.artistReducer(data) : {};
 
     return results;
   }
 
-  async getSingleAlbumTracks(albumId) {
-    const data = await this.get(`/${albumId}/tracks`);
+  async getSingleArtistAlbums(artistId) {
+    const data = await this.get(`/${artistId}/albums`);
 
     const results =
-      data.items && data.items.length ? data.items.map(track => this.trackReducer(track)) : [];
+      data.items && data.items.length ? data.items.map(album => this.albumReducer(album)) : [];
+
+    return results;
+  }
+
+  async getSingleArtistsRelated(artistId) {
+    const data = await this.get(`/${artistId}/related-artists`);
+
+    const results =
+      data.items && data.items.length ? data.items.map(artist => this.artistReducer(artist)) : [];
+
+    return results;
+  }
+
+  async getSingleArtistTopTracks(artistId) {
+    const data = await this.get(`/${artistId}/top-tracks`, {
+      country: 'from_token'
+    });
+
+    const results =
+      data.tracks && data.tracks.length ? data.tracks.map(track => this.trackReducer(track)) : [];
 
     return results;
   }
@@ -59,7 +81,10 @@ class SpotifyAlbum extends RESTDataSource {
       name: album.name,
       artists: album.artists.map(artist => this.artistReducer(artist)),
       total_tracks: album.total_tracks,
-      tracks: album.tracks.items.map(track => this.trackReducer(track)),
+      tracks:
+        album.tracks && album.tracks.length
+          ? album.tracks.items.map(track => this.trackReducer(track))
+          : [],
       images: album.images.map(image => this.imageReducer(image)),
       uri: album.uri
     };
@@ -87,4 +112,4 @@ class SpotifyAlbum extends RESTDataSource {
   }
 }
 
-module.exports = SpotifyAlbum;
+module.exports = SpotifyArtist;

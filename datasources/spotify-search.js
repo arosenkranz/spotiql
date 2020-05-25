@@ -1,4 +1,3 @@
-require('dotenv').config();
 const { RESTDataSource } = require('apollo-datasource-rest');
 
 class SpotifySearch extends RESTDataSource {
