@@ -67,6 +67,61 @@ const resolvers = {
         return results;
       }
       throw new AuthenticationError('Not logged in');
+    },
+    // Browse
+    getFeaturedPlaylists: async (_, args, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getFeaturedPlaylists(args.limit, args.offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getNewReleases: async (_, args, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getNewReleases(args.limit, args.offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getGenres: async (_, __, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getGenres();
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getCategories: async (_, args, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getCategories(args.limit, args.offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getSingleCategory: async (_, args, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getSingleCategory(args.categoryId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getCategoryPlaylists: async (_, args, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getCategoryPlaylists(args.categoryId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getRecommendationTracks: async (_, args, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getRecommendationTracks(
+          args.limit,
+          args.seed_artists,
+          args.seed_tracks,
+          args.seed_genres
+        );
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
     }
   }
 };
