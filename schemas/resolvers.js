@@ -67,6 +67,91 @@ const resolvers = {
         return results;
       }
       throw new AuthenticationError('Not logged in');
+    },
+    // Browse
+    getFeaturedPlaylists: async (_, args, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getFeaturedPlaylists(args.limit, args.offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getNewReleases: async (_, args, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getNewReleases(args.limit, args.offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getGenres: async (_, __, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getGenres();
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getCategories: async (_, args, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getCategories(args.limit, args.offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getSingleCategory: async (_, args, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getSingleCategory(args.categoryId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getCategoryPlaylists: async (_, args, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getCategoryPlaylists(args.categoryId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getRecommendationTracks: async (_, args, { dataSources: { spotifyBrowse }, token }) => {
+      if (token) {
+        const results = await spotifyBrowse.getRecommendationTracks(
+          args.limit,
+          args.seed_artists,
+          args.seed_tracks,
+          args.seed_genres
+        );
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+
+    // me
+    getMyProfile: async (_, args, { dataSources: { spotifyMe }, token }) => {
+      if (token) {
+        const results = await spotifyMe.getMyProfile();
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getMyPlaylists: async (_, { limit, offset }, { dataSources: { spotifyMe }, token }) => {
+      if (token) {
+        const results = await spotifyMe.getMyPlaylists(limit, offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getMyTopArtists: async (_, { limit, offset }, { dataSources: { spotifyMe }, token }) => {
+      if (token) {
+        const results = await spotifyMe.getMyTopArtists(limit, offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getMyTopTracks: async (_, { limit, offset }, { dataSources: { spotifyMe }, token }) => {
+      if (token) {
+        const results = await spotifyMe.getMyTopTracks(limit, offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
     }
   }
 };

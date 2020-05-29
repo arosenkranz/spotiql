@@ -10,7 +10,7 @@
 <body>
   <h1>Click this to get a token.</h1>
   <a href="/auth/spotify/login?redirect_uri=http://localhost:4000">Login with Spotify</a>
-
+  <p id="access-token-body"></p>
   <hr />
 
   <h2>Click this to get a refresh token</h2>
@@ -33,7 +33,7 @@
         console.warn('No token');
         return;
       }
-      location.hash = '';
+      document.querySelector('#access-token-body').textContent = JSON.stringify(hashObj, null, 2);
       $refreshBtn.removeAttribute('disabled');
     }
 

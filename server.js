@@ -5,8 +5,14 @@ const { ApolloServer } = require('apollo-server-express');
 const routes = require('./routes');
 
 const { typeDefs, resolvers } = require('./schemas');
-const { SpotifySearch, SpotifyAlbum, SpotifyArtist } = require('./datasources');
 const { authMiddleware } = require('./utils/auth');
+const {
+  SpotifySearch,
+  SpotifyAlbum,
+  SpotifyArtist,
+  SpotifyBrowse,
+  SpotifyMe
+} = require('./datasources');
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -17,7 +23,9 @@ const server = new ApolloServer({
     return {
       spotifySearch: new SpotifySearch(),
       spotifyAlbum: new SpotifyAlbum(),
-      spotifyArtist: new SpotifyArtist()
+      spotifyArtist: new SpotifyArtist(),
+      spotifyBrowse: new SpotifyBrowse(),
+      spotifyMe: new SpotifyMe()
     };
   },
   context: authMiddleware
