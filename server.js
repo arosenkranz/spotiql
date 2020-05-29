@@ -11,7 +11,8 @@ const {
   SpotifyAlbum,
   SpotifyArtist,
   SpotifyBrowse,
-  SpotifyMe
+  SpotifyUser,
+  SpotifyPlaylists
 } = require('./datasources');
 
 const PORT = process.env.PORT || 4000;
@@ -25,7 +26,8 @@ const server = new ApolloServer({
       spotifyAlbum: new SpotifyAlbum(),
       spotifyArtist: new SpotifyArtist(),
       spotifyBrowse: new SpotifyBrowse(),
-      spotifyMe: new SpotifyMe()
+      spotifyUser: new SpotifyUser(),
+      spotifyPlaylists: new SpotifyPlaylists()
     };
   },
   context: authMiddleware

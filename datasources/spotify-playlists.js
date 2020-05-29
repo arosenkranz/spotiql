@@ -1,9 +1,9 @@
 const { RESTDataSource } = require('apollo-datasource-rest');
 
-class SpotifyMe extends RESTDataSource {
+class SpotifyPlaylists extends RESTDataSource {
   constructor() {
     super();
-    this.baseURL = 'https://api.spotify.com/v1/me';
+    this.baseURL = 'https://api.spotify.com/v1/playlists';
   }
 
   // set spotify token with each request
@@ -11,68 +11,26 @@ class SpotifyMe extends RESTDataSource {
     request.headers.set('Authorization', `Bearer ${this.context.token}`);
   }
 
-  async getMyProfile() {
-    const data = await this.get('/');
-
-    const results = data ? this.userReducer(data) : {};
-
+  async getPlaylist(playlistId) {
+    const data = await this.get(`/${playlistId}`);
+    const results = data ? this.playlistReducer(data) : {};
     return results;
   }
 
-  async getMyPlaylists(limit = 50, offset = 0) {
-    const data = await this.get('/playlists', {
+  async getPlaylistTracks(playlistId, limit = 100, offset = 0) {
+    const data = await this.get(`/${playlistId}/tracks`, {
       limit,
       offset
     });
 
-    const results =
-      data && data.items.length ? data.items.map(playlist => this.playlistReducer(playlist)) : [];
+    const results = {
+      tracks:
+        data && data.items.length ? data.items.map(({ track }) => this.trackReducer(track)) : [],
+      nextPage: data && data.next ? data.next : null
+    };
 
     return results;
   }
-
-  async getMyTopArtists(limit = 50, offset = 0) {
-    const data = await this.get('/top/artists', {
-      limit,
-      offset
-    });
-    const results =
-      data && data.items.length ? data.items.map(artist => this.artistReducer(artist)) : [];
-
-    return results;
-  }
-
-  async getMyTopTracks(limit = 50, offset = 0) {
-    const data = await this.get('/top/tracks', {
-      limit,
-      offset
-    });
-
-    const results =
-      data && data.items.length ? data.items.map(track => this.trackReducer(track)) : [];
-
-    return results;
-  }
-
-  // async getPlaylistTracks(playlistId, limit, offset, currentResults = []) {
-  //   const data = await this.get(`/playlist/${playlistId}/tracks`);
-
-  //   const results = data && data.items.length ? data.items.map(({track}) => this.trackReducer(track)) : [];
-
-  //   const newResults = [...currentResults, ...results];
-
-  //   if (data.next) {
-  //     const params = data.next.split('?').pop().split('&')
-
-  //     const offset = params.find(param => param.includes('offset')).split('=').pop();
-
-  //     const limit = params.find(param => param.includes('limit')).split('=').pop();
-
-  //     return this.getPlaylistTracks(playlistId, limit, offset, newResults);
-  //   }
-
-  //   return newResults;
-  // }
 
   userReducer(user) {
     return {
@@ -156,4 +114,4 @@ class SpotifyMe extends RESTDataSource {
   }
 }
 
-module.exports = SpotifyMe;
+module.exports = SpotifyPlaylists;

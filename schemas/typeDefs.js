@@ -6,24 +6,24 @@ const typeDefs = gql`
     search(q: String!, type: AllowedSearchType): SearchResult
 
     # albums
-    getAlbums(ids: [String]): [Album]
-    getSingleAlbum(id: String!): Album
-    getSingleAlbumTracks(id: String!): [Track]
+    getAlbums(ids: [ID]): [Album]
+    getSingleAlbum(id: ID!): Album
+    getSingleAlbumTracks(id: ID!): [Track]
 
     # artists
-    getArtists(ids: [String]): [Artist]
-    getSingleArtist(id: String!): Artist
-    getSingleArtistAlbums(id: String!): [Album]
-    getSingleArtistRelated(id: String!): [Artist]
-    getSingleArtistTopTracks(id: String!): [Track]
+    getArtists(ids: [ID]): [Artist]
+    getSingleArtist(id: ID!): Artist
+    getSingleArtistAlbums(id: ID!): [Album]
+    getSingleArtistRelated(id: ID!): [Artist]
+    getSingleArtistTopTracks(id: ID!): [Track]
 
     # browse
     getFeaturedPlaylists(limit: Int, offset: Int): [Playlist]
     getNewReleases(limit: Int, offset: Int): [Album]
     getGenres: [Genre]
     getCategories(limit: Int, offset: Int): [Category]
-    getSingleCategory(categoryId: String!): Category
-    getCategoryPlaylists(categoryId: String!): [Playlist]
+    getSingleCategory(categoryId: ID!): Category
+    getCategoryPlaylists(categoryId: ID!): [Playlist]
     getRecommendationTracks(
       limit: Int
       seed_artists: [String]
@@ -36,6 +36,12 @@ const typeDefs = gql`
     getMyPlaylists(limit: Int, offset: Int): [Playlist]
     getMyTopArtists(limit: Int, offset: Int): [Artist]
     getMyTopTracks(limit: Int, offset: Int): [Track]
+    getMySavedAlbums(limit: Int, offset: Int): [Album]
+    getMySavedTracks(limit: Int, offset: Int): [Track]
+
+    # playlists
+    getPlaylist(playlistId: ID!): Playlist
+    getPlaylistTracks(playlistId: ID!, limit: Int, offset: Int): PlaylistTracks
   }
 
   type SearchResult {
@@ -47,7 +53,7 @@ const typeDefs = gql`
   }
 
   type Album {
-    id: String
+    id: ID
     name: String
     uri: String
     total_tracks: Int
@@ -57,7 +63,7 @@ const typeDefs = gql`
   }
 
   type Artist {
-    id: String
+    id: ID
     name: String
     uri: String
     genres: [String]
@@ -65,7 +71,7 @@ const typeDefs = gql`
   }
 
   type Track {
-    id: String
+    id: ID
     name: String
     uri: String
     track_number: Int
@@ -84,7 +90,7 @@ const typeDefs = gql`
   type Playlist {
     description: String
     spotify_url: String
-    id: String
+    id: ID
     images: [Image]
     name: String
     owner_id: String
@@ -92,9 +98,14 @@ const typeDefs = gql`
     track_count: Int
   }
 
+  type PlaylistTracks {
+    tracks: [Track]
+    nextPage: String
+  }
+
   type Category {
     icons: [Image]
-    id: String
+    id: ID
     name: String
   }
 
@@ -107,7 +118,7 @@ const typeDefs = gql`
     email: String
     spotify_url: String
     image: Image
-    id: String
+    id: ID
     product: String
   }
 
