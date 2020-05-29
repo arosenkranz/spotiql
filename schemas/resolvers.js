@@ -125,30 +125,64 @@ const resolvers = {
     },
 
     // me
-    getMyProfile: async (_, args, { dataSources: { spotifyMe }, token }) => {
+    getMyProfile: async (_, __, { dataSources: { spotifyUser }, token }) => {
       if (token) {
-        const results = await spotifyMe.getMyProfile();
+        const results = await spotifyUser.getMyProfile();
         return results;
       }
       throw new AuthenticationError('Not logged in');
     },
-    getMyPlaylists: async (_, { limit, offset }, { dataSources: { spotifyMe }, token }) => {
+    getMyPlaylists: async (_, { limit, offset }, { dataSources: { spotifyUser }, token }) => {
       if (token) {
-        const results = await spotifyMe.getMyPlaylists(limit, offset);
+        const results = await spotifyUser.getMyPlaylists(limit, offset);
         return results;
       }
       throw new AuthenticationError('Not logged in');
     },
-    getMyTopArtists: async (_, { limit, offset }, { dataSources: { spotifyMe }, token }) => {
+    getMyTopArtists: async (_, { limit, offset }, { dataSources: { spotifyUser }, token }) => {
       if (token) {
-        const results = await spotifyMe.getMyTopArtists(limit, offset);
+        const results = await spotifyUser.getMyTopArtists(limit, offset);
         return results;
       }
       throw new AuthenticationError('Not logged in');
     },
-    getMyTopTracks: async (_, { limit, offset }, { dataSources: { spotifyMe }, token }) => {
+    getMyTopTracks: async (_, { limit, offset }, { dataSources: { spotifyUser }, token }) => {
       if (token) {
-        const results = await spotifyMe.getMyTopTracks(limit, offset);
+        const results = await spotifyUser.getMyTopTracks(limit, offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getMySavedAlbums: async (_, { limit, offset }, { dataSources: { spotifyUser }, token }) => {
+      if (token) {
+        const results = await spotifyUser.getMySavedAlbums(limit, offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getMySavedTracks: async (_, { limit, offset }, { dataSources: { spotifyUser }, token }) => {
+      if (token) {
+        const results = await spotifyUser.getMySavedTracks(limit, offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+
+    // playlists
+    getPlaylist: async (_, { playlistId }, { dataSources: { spotifyPlaylists }, token }) => {
+      if (token) {
+        const results = await spotifyPlaylists.getPlaylist(playlistId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getPlaylistTracks: async (
+      _,
+      { playlistId, limit, offset },
+      { dataSources: { spotifyPlaylists }, token }
+    ) => {
+      if (token) {
+        const results = await spotifyPlaylists.getPlaylistTracks(playlistId, limit, offset);
         return results;
       }
       throw new AuthenticationError('Not logged in');
