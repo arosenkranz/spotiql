@@ -122,6 +122,36 @@ const resolvers = {
         return results;
       }
       throw new AuthenticationError('Not logged in');
+    },
+
+    // me
+    getMyProfile: async (_, args, { dataSources: { spotifyMe }, token }) => {
+      if (token) {
+        const results = await spotifyMe.getMyProfile();
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getMyPlaylists: async (_, { limit, offset }, { dataSources: { spotifyMe }, token }) => {
+      if (token) {
+        const results = await spotifyMe.getMyPlaylists(limit, offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getMyTopArtists: async (_, { limit, offset }, { dataSources: { spotifyMe }, token }) => {
+      if (token) {
+        const results = await spotifyMe.getMyTopArtists(limit, offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getMyTopTracks: async (_, { limit, offset }, { dataSources: { spotifyMe }, token }) => {
+      if (token) {
+        const results = await spotifyMe.getMyTopTracks(limit, offset);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
     }
   }
 };
