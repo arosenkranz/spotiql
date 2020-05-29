@@ -4,16 +4,19 @@ const typeDefs = gql`
   type Query {
     # search
     search(q: String!, type: AllowedSearchType): SearchResult
+
     # albums
     getAlbums(ids: [String]): [Album]
     getSingleAlbum(id: String!): Album
     getSingleAlbumTracks(id: String!): [Track]
+
     # artists
     getArtists(ids: [String]): [Artist]
     getSingleArtist(id: String!): Artist
     getSingleArtistAlbums(id: String!): [Album]
     getSingleArtistRelated(id: String!): [Artist]
     getSingleArtistTopTracks(id: String!): [Track]
+
     # browse
     getFeaturedPlaylists(limit: Int, offset: Int): [Playlist]
     getNewReleases(limit: Int, offset: Int): [Album]
@@ -27,6 +30,12 @@ const typeDefs = gql`
       seed_tracks: [String]
       seed_genres: [String]
     ): [Track]
+
+    # me
+    getMyProfile: User
+    getMyPlaylists(limit: Int, offset: Int): [Playlist]
+    getMyTopArtists(limit: Int, offset: Int): [Artist]
+    getMyTopTracks(limit: Int, offset: Int): [Track]
   }
 
   type SearchResult {
@@ -91,6 +100,15 @@ const typeDefs = gql`
 
   type Genre {
     genre_name: String
+  }
+
+  type User {
+    display_name: String
+    email: String
+    spotify_url: String
+    image: Image
+    id: String
+    product: String
   }
 
   enum AllowedSearchType {
