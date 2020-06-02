@@ -6,30 +6,14 @@ const routes = require('./routes');
 
 const { typeDefs, resolvers } = require('./schemas');
 const { authMiddleware } = require('./utils/auth');
-const {
-  SpotifySearch,
-  SpotifyAlbum,
-  SpotifyArtist,
-  SpotifyBrowse,
-  SpotifyUser,
-  SpotifyPlaylists
-} = require('./datasources');
+const dataSources = require('./datasources');
 
 const PORT = process.env.PORT || 4000;
 const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  dataSources: () => {
-    return {
-      spotifySearch: new SpotifySearch(),
-      spotifyAlbum: new SpotifyAlbum(),
-      spotifyArtist: new SpotifyArtist(),
-      spotifyBrowse: new SpotifyBrowse(),
-      spotifyUser: new SpotifyUser(),
-      spotifyPlaylists: new SpotifyPlaylists()
-    };
-  },
+  dataSources,
   context: authMiddleware
 });
 
