@@ -186,6 +186,110 @@ const resolvers = {
         return results;
       }
       throw new AuthenticationError('Not logged in');
+    },
+
+    // player
+    currentPlayerState: async (_, __, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.currentPlayerState();
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    recentlyPlayed: async (_, { limit }, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.recentlyPlayed(limit);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getDevices: async (_, __, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.getDevices();
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    getCurrentlyPlaying: async (_, __, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.getCurrentlyPlaying();
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    }
+  },
+  // Mutation
+  Mutation: {
+    // player
+    nextTrack: async (_, { deviceId }, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.nextTrack(deviceId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    previousTrack: async (_, { deviceId }, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.previousTrack(deviceId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    addToQueue: async (_, { uri, deviceId }, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.addToQueue(uri, deviceId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    pauseTrack: async (_, { deviceId }, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.pauseTrack(deviceId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    playTrack: async (_, { deviceId }, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.playTrack(deviceId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    setRepeat: async (_, { state, deviceId }, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.setRepeat(state, deviceId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    seekTrack: async (_, { position, deviceId }, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.seekTrack(position, deviceId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    shufflePlayer: async (_, { state, deviceId }, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.shufflePlayer(state, deviceId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    transferPlayback: async (_, { deviceIds }, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.transferPlayback(deviceIds);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
+    setVolume: async (_, { volume, deviceId }, { dataSources: { spotifyPlayer }, token }) => {
+      if (token) {
+        const results = await spotifyPlayer.setVolume(volume, deviceId);
+        return results;
+      }
+      throw new AuthenticationError('Not logged in');
     }
   }
 };
