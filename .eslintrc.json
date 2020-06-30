@@ -4,7 +4,8 @@
   "rules": {
     "prettier/prettier": ["error"],
     "func-names": ["off"],
-    "comma-dangle": ["off"]
+    "comma-dangle": ["off"],
+    "class-methods-use-this": ["off"]
   },
   "env": {
     "es6": true,

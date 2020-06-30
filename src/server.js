@@ -2,32 +2,19 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { ApolloServer } = require('apollo-server-express');
+const path = require('path');
 const routes = require('./routes');
 
 const { typeDefs, resolvers } = require('./schemas');
 const { authMiddleware } = require('./utils/auth');
-const {
-  SpotifySearch,
-  SpotifyAlbum,
-  SpotifyArtist,
-  SpotifyBrowse,
-  SpotifyMe
-} = require('./datasources');
+const dataSources = require('./datasources');
 
 const PORT = process.env.PORT || 4000;
 const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  dataSources: () => {
-    return {
-      spotifySearch: new SpotifySearch(),
-      spotifyAlbum: new SpotifyAlbum(),
-      spotifyArtist: new SpotifyArtist(),
-      spotifyBrowse: new SpotifyBrowse(),
-      spotifyMe: new SpotifyMe()
-    };
-  },
+  dataSources,
   context: authMiddleware
 });
 
@@ -37,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, './public')));
 app.use(routes);
 
 app.listen(PORT, () => {
