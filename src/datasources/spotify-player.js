@@ -1,4 +1,5 @@
 const { RESTDataSource } = require('apollo-datasource-rest');
+const Reducers = require('../utils/reducers');
 
 class SpotifyPlayer extends RESTDataSource {
   constructor() {
@@ -13,7 +14,7 @@ class SpotifyPlayer extends RESTDataSource {
 
   async currentPlayerState() {
     const data = await this.get('/');
-    const results = data ? this.playerReducer(data) : {};
+    const results = data ? Reducers.playerReducer(data) : {};
     return results;
   }
 
@@ -23,7 +24,7 @@ class SpotifyPlayer extends RESTDataSource {
     });
 
     const results =
-      data && data.items.length ? data.items.map(({ track }) => this.trackReducer(track)) : [];
+      data && data.items.length ? data.items.map(({ track }) => Reducers.trackReducer(track)) : [];
 
     return results;
   }
@@ -32,7 +33,7 @@ class SpotifyPlayer extends RESTDataSource {
     const data = await this.get('/devices');
 
     const results =
-      data && data.devices.length ? data.devices.map(device => this.deviceReducer(device)) : [];
+      data && data.devices.length ? data.devices.map(device => Reducers.deviceReducer(device)) : [];
 
     return results;
   }
@@ -40,7 +41,7 @@ class SpotifyPlayer extends RESTDataSource {
   async getCurrentlyPlaying() {
     const data = await this.get('/currently-playing');
 
-    const results = data && data.item ? this.trackReducer(data.item) : {};
+    const results = data && data.item ? Reducers.trackReducer(data.item) : {};
 
     return results;
   }
@@ -163,82 +164,6 @@ class SpotifyPlayer extends RESTDataSource {
       console.log(err);
       return err;
     }
-  }
-
-  deviceReducer(device) {
-    return {
-      device_id: device.id,
-      is_active: device.is_active,
-      is_private_session: device.is_private_session,
-      is_restricted: device.is_restricted,
-      device_name: device.name,
-      device_type: device.type,
-      device_volume: device.volume_percent
-    };
-  }
-
-  playerReducer(player) {
-    return {
-      device_id: player.device.id,
-      device_name: player.device.name,
-      device_type: player.device.type,
-      device_volume: player.device.volume_percent,
-      is_playing: player.is_playing,
-      track_info: {
-        album: player.item ? this.albumReducer(player.item.album) : null,
-        artists: player.item ? player.item.artists.map(artist => this.artistReducer(artist)) : null,
-        track_name: player.item ? player.item.name : null,
-        track_id: player.item ? player.item.id : null
-      }
-    };
-  }
-
-  // artist reducer
-  artistReducer(artist) {
-    return {
-      id: artist.id,
-      name: artist.name,
-      genres: artist.genres,
-      images:
-        artist.images && artist.images.length
-          ? artist.images.map(image => this.imageReducer(image))
-          : [],
-      uri: artist.uri
-    };
-  }
-
-  // album reducer
-  albumReducer(album) {
-    return {
-      id: album.id,
-      name: album.name,
-      artists: album.artists ? album.artists.map(artist => this.artistReducer(artist)) : null,
-      total_tracks: album.total_tracks,
-      tracks: album.tracks ? album.tracks.items.map(track => this.trackReducer(track)) : null,
-      images: album.images ? album.images.map(image => this.imageReducer(image)) : null,
-      uri: album.uri
-    };
-  }
-
-  // track reducer
-  trackReducer(track) {
-    return {
-      id: track.id,
-      name: track.name,
-      uri: track.uri,
-      duration: track.duration_ms,
-      track_number: track.track_number,
-      artists: track.artists.map(artist => this.artistReducer(artist)),
-      preview_url: track.preview_url
-    };
-  }
-
-  imageReducer(image) {
-    return {
-      url: image.url,
-      height: image.height,
-      width: image.width
-    };
   }
 }
 

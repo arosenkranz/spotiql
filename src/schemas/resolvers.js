@@ -115,9 +115,9 @@ const resolvers = {
       if (token) {
         const results = await spotifyBrowse.getRecommendationTracks(
           args.limit,
-          args.seed_artists,
-          args.seed_tracks,
-          args.seed_genres
+          args.seedArtists,
+          args.seedTracks,
+          args.seedGenres
         );
         return results;
       }

@@ -13,7 +13,7 @@ const typeDefs = gql`
     id: ID
     name: String
     uri: String
-    total_tracks: Int
+    totalTracks: Int
     tracks: [Track]
     artists: [Artist]
     images: [Image]
@@ -31,11 +31,11 @@ const typeDefs = gql`
     id: ID
     name: String
     uri: String
-    track_number: Int
+    trackNumber: Int
     duration: Int
     album: Album
     artists: [Artist]
-    preview_url: String
+    previewUrl: String
   }
 
   type Image {
@@ -46,13 +46,13 @@ const typeDefs = gql`
 
   type Playlist {
     description: String
-    spotify_url: String
+    spotifyUrl: String
     id: ID
     images: [Image]
     name: String
-    owner_id: String
-    owner_name: String
-    track_count: Int
+    ownerId: String
+    ownerName: String
+    trackCount: Int
   }
 
   type PlaylistTracks {
@@ -67,48 +67,48 @@ const typeDefs = gql`
   }
 
   type Genre {
-    genre_name: String
+    genreName: String
   }
 
   type User {
-    display_name: String
+    displayName: String
     email: String
-    spotify_url: String
+    spotifyUrl: String
     image: Image
     id: ID
     product: String
   }
 
   type Player {
-    device_id: ID
-    device_name: String
-    device_type: String
-    device_volume: Int
-    is_playing: Boolean
-    track_info: PlayerTrackInfo
+    deviceId: ID
+    deviceName: String
+    deviceType: String
+    deviceVolume: Int
+    isPlaying: Boolean
+    trackInfo: PlayerTrackInfo
   }
 
   type Device {
-    device_id: ID
-    device_name: String
-    device_type: String
-    device_volume: Int
-    is_active: Boolean
-    is_restricted: Boolean
-    is_private_session: Boolean
+    deviceId: ID
+    deviceName: String
+    deviceType: String
+    deviceVolume: Int
+    isActive: Boolean
+    isRestricted: Boolean
+    isPrivateSession: Boolean
   }
 
   type PlayerTrackInfo {
     album: Album
     artists: [Artist]
-    track_name: String
-    track_id: ID
+    trackName: String
+    trackId: ID
   }
 
   enum AllowedSearchType {
-    track
-    artist
-    album
+    TRACK
+    ARTIST
+    ALBUM
     # playlist
     # show
     # episode
@@ -139,9 +139,9 @@ const typeDefs = gql`
     getCategoryPlaylists(categoryId: ID!): [Playlist]
     getRecommendationTracks(
       limit: Int
-      seed_artists: [String]
-      seed_tracks: [String]
-      seed_genres: [String]
+      seedArtists: [String]
+      seedTracks: [String]
+      seedGenres: [String]
     ): [Track]
 
     # me
