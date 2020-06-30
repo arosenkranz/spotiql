@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { ApolloServer } = require('apollo-server-express');
+const path = require('path');
 const routes = require('./routes');
 
 const { typeDefs, resolvers } = require('./schemas');
@@ -23,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, './public')));
 app.use(routes);
 
 app.listen(PORT, () => {
