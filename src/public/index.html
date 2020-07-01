@@ -23,7 +23,7 @@
 
     function init() {
       // set login URL with correct redirect path
-      document.querySelector('#login-link').setAttribute('src', `/auth/spotify/login?redirect_uri=${location.href}`);
+      document.querySelector('#login-link').setAttribute('href', `/auth/spotify/login?redirect_uri=${location.href}`);
 
       // get tokens from url
       hashObj = location.hash ? location.hash?.substr(1)
