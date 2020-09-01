@@ -15,7 +15,9 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   dataSources,
-  context: authMiddleware
+  context: authMiddleware,
+  playground: true,
+  introspection: true
 });
 
 server.applyMiddleware({ app });

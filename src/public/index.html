@@ -9,7 +9,7 @@
 
 <body>
   <h1>Click this to get a token.</h1>
-  <a href="/auth/spotify/login?redirect_uri=http://localhost:4000">Login with Spotify</a>
+  <a href="/auth/spotify/login?redirect_uri=http://localhost:4000" id="login-link">Login with Spotify</a>
   <p id="access-token-body"></p>
   <hr />
 
@@ -22,6 +22,9 @@
     let hashObj;
 
     function init() {
+      // set login URL with correct redirect path
+      document.querySelector('#login-link').setAttribute('href', `/auth/spotify/login?redirect_uri=${location.href}`);
+
       // get tokens from url
       hashObj = location.hash ? location.hash?.substr(1)
         .split("&")

@@ -36,6 +36,7 @@ const typeDefs = gql`
     album: Album
     artists: [Artist]
     previewUrl: String
+    images: [Image]
   }
 
   type Image {
@@ -105,6 +106,68 @@ const typeDefs = gql`
     trackId: ID
   }
 
+  type AudioAnalysis {
+    bars: [TimeInterval]
+    beats: [TimeInterval]
+    sections: [Section]
+    segments: [Segment]
+    tatums: [TimeInterval]
+  }
+
+  type TimeInterval {
+    start: Float
+    duration: Float
+    confidence: Float
+  }
+
+  type Section {
+    start: Float
+    duration: Float
+    confidence: Float
+    loudness: Float
+    tempo: Float
+    tempoConfidence: Float
+    key: Int
+    keyConfidence: Float
+    mode: Int
+    modeConfidence: Float
+    timeSignature: Int
+    timeSignatureConfidence: Float
+  }
+
+  type Segment {
+    start: Float
+    duration: Float
+    confidence: Float
+    loudnessStart: Float
+    loudnessMax: Float
+    loudnessMaxTime: Float
+    loudnessEnd: Float
+    pitches: [Float]
+    timbre: [Float]
+  }
+
+  type AudioFeature {
+    durationMs: Float
+    key: Int
+    mode: Int
+    timeSignature: Int
+    acousticness: Float
+    danceability: Float
+    energy: Float
+    instrumentalness: Float
+    liveness: Float
+    loudness: Float
+    speechiness: Float
+    valence: Float
+    tempo: Float
+    id: String
+    uri: String
+    trackHref: String
+    analysisUrl: String
+    type: String
+  }
+
   enum AllowedSearchType {
     TRACK
     ARTIST
@@ -161,6 +224,12 @@ const typeDefs = gql`
     recentlyPlayed(limit: Int): [Track]
     getDevices: [Device]
     getCurrentlyPlaying: Track
+
+    # track
+    getSingleTrack(trackId: ID!): Track
+    getTracks(ids: [ID]!): [Track]
+    getAudioAnalysis(trackId: ID!): AudioAnalysis
+    getAudioFeatures(trackId: ID!): AudioFeature
   }
 
   type Mutation {

@@ -216,6 +216,47 @@ const resolvers = {
         return results;
       }
       throw new AuthenticationError('Not logged in');
+    },
+
+    // track data
+    getSingleTrack: async (_, { trackId }, { dataSources: { spotifyTrack }, token }) => {
+      if (token) {
+        const results = await spotifyTrack.getSingleTrack(trackId);
+
+        return results;
+      }
+
+      throw new AuthenticationError('Not logged in');
+    },
+
+    getTracks: async (_, { ids }, { dataSources: { spotifyTrack }, token }) => {
+      if (token) {
+        const results = await spotifyTrack.getTracks(ids);
+
+        return results;
+      }
+
+      throw new AuthenticationError('Not logged in');
+    },
+
+    getAudioAnalysis: async (_, { trackId }, { dataSources: { spotifyTrack }, token }) => {
+      if (token) {
+        const results = await spotifyTrack.getAudioAnalysis(trackId);
+
+        return results;
+      }
+
+      throw new AuthenticationError('Not logged in');
+    },
+
+    getAudioFeatures: async (_, { trackId }, { dataSources: { spotifyTrack }, token }) => {
+      if (token) {
+        const results = await spotifyTrack.getAudioFeatures(trackId);
+
+        return results;
+      }
+
+      throw new AuthenticationError('Not logged in');
     }
   },
   // Mutation
