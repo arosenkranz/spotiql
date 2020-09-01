@@ -26,6 +26,7 @@ class Reducers {
 
   // album reducer
   albumReducer(album) {
+    console.log(album);
     return {
       id: album.id || null,
       name: album.name || null,
@@ -45,9 +46,10 @@ class Reducers {
       uri: track.uri || null,
       duration: track.duration_ms || null,
       trackNumber: track.track_number || null,
-      album: this.album ? this.albumReducer(track.album) : null,
+      album: track.album ? this.albumReducer(track.album) : null,
       artists: track.artists ? track.artists.map(artist => this.artistReducer(artist)) : [],
-      previewUrl: track.preview_url
+      previewUrl: track.preview_url,
+      images: track.images ? track.images.map(image => this.imageReducer(image)) : []
     };
   }
 
@@ -105,6 +107,78 @@ class Reducers {
       deviceName: device.name || null,
       deviceType: device.type || null,
       deviceVolume: device.volume_percent || null
+    };
+  }
+
+  audioAnalysisReducer(audio) {
+    return {
+      bars: audio.bars.map(this.timeIntervalReducer),
+      beats: audio.beats.map(this.timeIntervalReducer),
+      tatums: audio.tatums.map(this.timeIntervalReducer),
+      sections: audio.sections.map(this.sectionReducer),
+      segments: audio.segments.map(this.segmentReducer)
+    };
+  }
+
+  timeIntervalReducer(interval) {
+    return {
+      start: interval.start,
+      duration: interval.duration,
+      confidence: interval.confidence
+    };
+  }
+
+  sectionReducer(section) {
+    return {
+      start: section.start,
+      duration: section.duration,
+      confidence: section.confidence,
+      loudness: section.loudness,
+      tempo: section.tempo,
+      tempoConfidence: section.tempo_confidence,
+      key: section.key,
+      keyConfidence: section.key_confidence,
+      mode: section.mode,
+      modeConfidence: section.mode_confidence,
+      timeSignature: section.time_signature,
+      timeSignatureConfidence: section.time_signature_confidence
+    };
+  }
+
+  segmentReducer(segment) {
+    return {
+      start: segment.start,
+      duration: segment.duration,
+      confidence: segment.confidence,
+      loudnessStart: segment.loudness_start,
+      loudnessMax: segment.loudness_max,
+      loudnessMaxTime: segment.loudness_max_time,
+      loudnessEnd: segment.loudness_end,
+      pitches: [...segment.pitches],
+      timbre: [...segment.timbre]
+    };
+  }
+
+  audioFeatureReducer(feature) {
+    return {
+      durationMs: feature.duration_ms,
+      key: feature.key,
+      mode: feature.mode,
+      timeSignature: feature.time_signature,
+      acousticness: feature.acousticness,
+      danceability: feature.danceability,
+      energy: feature.energy,
+      instrumentalness: feature.instrumentalness,
+      liveness: feature.liveness,
+      loudness: feature.loudness,
+      speechiness: feature.speechiness,
+      valence: feature.valence,
+      tempo: feature.tempo,
+      id: feature.id,
+      uri: feature.uri,
+      trackHref: feature.track_href,
+      analysisUrl: feature.analysis_url,
+      type: feature.type
     };
   }
 }

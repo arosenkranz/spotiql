@@ -5,6 +5,7 @@ const SpotifyBrowse = require('./spotify-browse');
 const SpotifyUser = require('./spotify-user');
 const SpotifyPlaylists = require('./spotify-playlists');
 const SpotifyPlayer = require('./spotify-player');
+const SpotifyTrack = require('./spotify-track');
 
 module.exports = () => {
   return {
@@ -14,6 +15,7 @@ module.exports = () => {
     spotifyBrowse: new SpotifyBrowse(),
     spotifyUser: new SpotifyUser(),
     spotifyPlaylists: new SpotifyPlaylists(),
-    spotifyPlayer: new SpotifyPlayer()
+    spotifyPlayer: new SpotifyPlayer(),
+    spotifyTrack: new SpotifyTrack()
   };
 };
