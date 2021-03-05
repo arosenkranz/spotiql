@@ -30,12 +30,12 @@ function Tokens({ tokens }) {
         {tokens.refresh_token}
         <Button
           colorScheme="blackAlpha"
-          onClick={copyAccessToken}
+          onClick={copyRefreshToken}
           position="absolute"
           top="1"
           right="1"
         >
-          {hasCopiedAccessToken ? 'Copied' : 'Copy'}
+          {hasCopiedRefreshToken ? 'Copied' : 'Copy'}
         </Button>
       </Code>
     </Box>
