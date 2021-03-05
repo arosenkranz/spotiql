@@ -51,7 +51,9 @@ function App() {
           {!tokens && (
             <Box padding={3}>
               <a
-                href={`${process.env.REACT_APP_SERVER_URL}/auth/spotify/login?redirect_uri=${window.location.href}`}
+                href={`${
+                  process.env.REACT_APP_SERVER_URL || 'https://spotiql.herokuapp.com'
+                }/auth/spotify/login?redirect_uri=${window.location.href}`}
               >
                 Login
               </a>
