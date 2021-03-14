@@ -4,10 +4,8 @@ const authRoutes = require('./auth');
 
 router.use('/auth', authRoutes);
 
-if (process.env.NODE_ENV === 'production') {
-  router.use('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../client/build/index.html'));
-  });
-}
+router.use('*', (req, res) => {
+  res.sendFile(path.join(process.cwd(), '/client/build/index.html'));
+});
 
 module.exports = router;
