@@ -6,9 +6,9 @@ A GraphQL wrapper for the Spotify Web API built with NodeJS, Express, Apollo Ser
 
 ## Instructions for Use
 
-1. Navigate to spotiql.herokuapp.com and log in with Spotify.
+1. Navigate to [spotiql.herokuapp.com](https://spotiql.herokuapp.com) and log in with Spotify.
 
-2. Once you log in, copy your access token from the page and navigate to spotiql.herokuapp.com/graphql
+2. Once you log in, copy your access token from the page and navigate to [spotiql.herokuapp.com/graphql](https://spotiql.herokuapp.com/graphql)
 
 3. Set up HTTP Headers in the lower left corner with the following information:
 
